@@ -1,0 +1,811 @@
+{
+  "model": "SP-04 Breakout Policy",
+  "universe": {
+    "main_universe_stocks": 1795,
+    "unseen_holdout_stocks": 100,
+    "bluechip_cohort_stocks": 20,
+    "benchmark": "NIFTY 50"
+  },
+  "chronological_splits": {
+    "train_end": "2019-10-16",
+    "val_end": "2021-02-10",
+    "sample_counts": {
+      "train": 2036346,
+      "val": 1201965,
+      "test": 6813570
+    },
+    "label_distribution": {
+      "train": {
+        "HOLD": 969740,
+        "BUY": 7943,
+        "SELL": 3526,
+        "EXIT": 1055137
+      },
+      "val": {
+        "HOLD": 570046,
+        "BUY": 1628,
+        "SELL": 446,
+        "EXIT": 629845
+      },
+      "test": {
+        "HOLD": 3234179,
+        "BUY": 8128,
+        "SELL": 2915,
+        "EXIT": 3568348
+      }
+    }
+  },
+  "classification": {
+    "validation": {
+      "n_samples": 1201965,
+      "accuracy": 0.9882350983597692,
+      "balanced_accuracy": 0.9733016932650544,
+      "macro_f1": 0.7030147121181829,
+      "weighted_f1": 0.9897157674890612,
+      "majority_class_baseline_accuracy": 0.5240127624348463,
+      "nll": 0.02867100015282631,
+      "ece": 0.002522050106202051,
+      "reliability_bins": [
+        {
+          "bin_lo": 0.5,
+          "bin_hi": 0.6000000000000001,
+          "n": 7078,
+          "confidence": 0.550892174243927,
+          "accuracy": 0.5760101723650749
+        },
+        {
+          "bin_lo": 0.6000000000000001,
+          "bin_hi": 0.7000000000000001,
+          "n": 8059,
+          "confidence": 0.6512331366539001,
+          "accuracy": 0.6994664350415685
+        },
+        {
+          "bin_lo": 0.7000000000000001,
+          "bin_hi": 0.8,
+          "n": 10541,
+          "confidence": 0.7531750798225403,
+          "accuracy": 0.784840147993549
+        },
+        {
+          "bin_lo": 0.8,
+          "bin_hi": 0.9,
+          "n": 19613,
+          "confidence": 0.856825590133667,
+          "accuracy": 0.7711721817162086
+        },
+        {
+          "bin_lo": 0.9,
+          "bin_hi": 1.0,
+          "n": 1156674,
+          "confidence": 0.997913658618927,
+          "accuracy": 0.998303757151972
+        }
+      ],
+      "temperature": 1.1917880773544312,
+      "per_class": {
+        "HOLD": {
+          "precision": 0.9919539395784402,
+          "recall": 0.983168025036576,
+          "f1": 0.98754144116126,
+          "support": 570046
+        },
+        "BUY": {
+          "precision": 0.24045112781954886,
+          "recall": 0.9821867321867321,
+          "f1": 0.3863251993235081,
+          "support": 1628
+        },
+        "SELL": {
+          "precision": 0.2916083916083916,
+          "recall": 0.9349775784753364,
+          "f1": 0.4445628997867804,
+          "support": 446
+        },
+        "EXIT": {
+          "precision": 0.9943853277531134,
+          "recall": 0.9928744373615731,
+          "f1": 0.9936293082011832,
+          "support": 629845
+        }
+      },
+      "confusion_matrix": [
+        [
+          560451,
+          5051,
+          1013,
+          3531
+        ],
+        [
+          29,
+          1599,
+          0,
+          0
+        ],
+        [
+          29,
+          0,
+          417,
+          0
+        ],
+        [
+          4488,
+          0,
+          0,
+          625357
+        ]
+      ]
+    },
+    "test": {
+      "n_samples": 6813570,
+      "accuracy": 0.9871946718093452,
+      "balanced_accuracy": 0.9800873202111429,
+      "macro_f1": 0.6589112680183236,
+      "weighted_f1": 0.9891909384902164,
+      "majority_class_baseline_accuracy": 0.5237119454265532,
+      "nll": 0.030681176111102104,
+      "ece": 0.002942833952075781,
+      "reliability_bins": [
+        {
+          "bin_lo": 0.4,
+          "bin_hi": 0.5,
+          "n": 3,
+          "confidence": 0.49903520941734314,
+          "accuracy": 0.3333333333333333
+        },
+        {
+          "bin_lo": 0.5,
+          "bin_hi": 0.6000000000000001,
+          "n": 41680,
+          "confidence": 0.5504347085952759,
+          "accuracy": 0.5696017274472169
+        },
+        {
+          "bin_lo": 0.6000000000000001,
+          "bin_hi": 0.7000000000000001,
+          "n": 46704,
+          "confidence": 0.6517777442932129,
+          "accuracy": 0.6985911270983214
+        },
+        {
+          "bin_lo": 0.7000000000000001,
+          "bin_hi": 0.8,
+          "n": 61151,
+          "confidence": 0.7531556487083435,
+          "accuracy": 0.7823747771908881
+        },
+        {
+          "bin_lo": 0.8,
+          "bin_hi": 0.9,
+          "n": 116847,
+          "confidence": 0.8574620485305786,
+          "accuracy": 0.7447773584259758
+        },
+        {
+          "bin_lo": 0.9,
+          "bin_hi": 1.0,
+          "n": 6547185,
+          "confidence": 0.997829020023346,
+          "accuracy": 0.9981515720114827
+        }
+      ],
+      "temperature": 1.1917880773544312,
+      "per_class": {
+        "HOLD": {
+          "precision": 0.9924853213527486,
+          "recall": 0.9804460421021842,
+          "f1": 0.9864289485071532,
+          "support": 3234179
+        },
+        "BUY": {
+          "precision": 0.2155559115668055,
+          "recall": 0.9932332677165354,
+          "f1": 0.35423431329530497,
+          "support": 8128
+        },
+        "SELL": {
+          "precision": 0.17890941865705273,
+          "recall": 0.9533447684391081,
+          "f1": 0.3012792714657415,
+          "support": 2915
+        },
+        "EXIT": {
+          "precision": 0.9940801618111541,
+          "recall": 0.9933252025867432,
+          "f1": 0.9937025388050944,
+          "support": 3568348
+        }
+      },
+      "confusion_matrix": [
+        [
+          3170938,
+          29379,
+          12754,
+          21108
+        ],
+        [
+          55,
+          8073,
+          0,
+          0
+        ],
+        [
+          136,
+          0,
+          2779,
+          0
+        ],
+        [
+          23818,
+          0,
+          0,
+          3544530
+        ]
+      ]
+    },
+    "test_uncalibrated": {
+      "n_samples": 6813570,
+      "accuracy": 0.9871946718093452,
+      "balanced_accuracy": 0.9800873202111429,
+      "macro_f1": 0.6589112680183236,
+      "weighted_f1": 0.9891909384902164,
+      "majority_class_baseline_accuracy": 0.5237119454265532,
+      "nll": 0.03140248358249664,
+      "ece": 0.0035257395955498143,
+      "reliability_bins": [
+        {
+          "bin_lo": 0.4,
+          "bin_hi": 0.5,
+          "n": 1,
+          "confidence": 0.4997411370277405,
+          "accuracy": 1.0
+        },
+        {
+          "bin_lo": 0.5,
+          "bin_hi": 0.6000000000000001,
+          "n": 34944,
+          "confidence": 0.5504198670387268,
+          "accuracy": 0.5584935897435898
+        },
+        {
+          "bin_lo": 0.6000000000000001,
+          "bin_hi": 0.7000000000000001,
+          "n": 38534,
+          "confidence": 0.6513699889183044,
+          "accuracy": 0.6728343800280272
+        },
+        {
+          "bin_lo": 0.7000000000000001,
+          "bin_hi": 0.8,
+          "n": 49991,
+          "confidence": 0.7527164816856384,
+          "accuracy": 0.7626172711087996
+        },
+        {
+          "bin_lo": 0.8,
+          "bin_hi": 0.9,
+          "n": 87253,
+          "confidence": 0.8572030663490295,
+          "accuracy": 0.7715608632367942
+        },
+        {
+          "bin_lo": 0.9,
+          "bin_hi": 1.0,
+          "n": 6602847,
+          "confidence": 0.998111367225647,
+          "accuracy": 0.9958478516918535
+        }
+      ],
+      "temperature": 1.0,
+      "per_class": {
+        "HOLD": {
+          "precision": 0.9924853213527486,
+          "recall": 0.9804460421021842,
+          "f1": 0.9864289485071532,
+          "support": 3234179
+        },
+        "BUY": {
+          "precision": 0.2155559115668055,
+          "recall": 0.9932332677165354,
+          "f1": 0.35423431329530497,
+          "support": 8128
+        },
+        "SELL": {
+          "precision": 0.17890941865705273,
+          "recall": 0.9533447684391081,
+          "f1": 0.3012792714657415,
+          "support": 2915
+        },
+        "EXIT": {
+          "precision": 0.9940801618111541,
+          "recall": 0.9933252025867432,
+          "f1": 0.9937025388050944,
+          "support": 3568348
+        }
+      },
+      "confusion_matrix": [
+        [
+          3170938,
+          29379,
+          12754,
+          21108
+        ],
+        [
+          55,
+          8073,
+          0,
+          0
+        ],
+        [
+          136,
+          0,
+          2779,
+          0
+        ],
+        [
+          23818,
+          0,
+          0,
+          3544530
+        ]
+      ]
+    }
+  },
+  "classification_by_condition": {
+    "val": {
+      "flat: no breakout": {
+        "n": 355244,
+        "accuracy": 0.999994370066771,
+        "macro_f1": 0.33333239500848716,
+        "true_HOLD": 355244,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 355242,
+        "pred_BUY": 1,
+        "pred_SELL": 1,
+        "pred_EXIT": 0
+      },
+      "flat: up candidate (supported)": {
+        "n": 5054,
+        "accuracy": 0.32924416303917686,
+        "macro_f1": 0.2611799345918199,
+        "true_HOLD": 3426,
+        "true_BUY": 1628,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 94,
+        "pred_BUY": 4960,
+        "pred_SELL": 0,
+        "pred_EXIT": 0
+      },
+      "flat: down candidate (supported)": {
+        "n": 1050,
+        "accuracy": 0.42857142857142855,
+        "macro_f1": 0.34034452862904746,
+        "true_HOLD": 604,
+        "true_BUY": 0,
+        "true_SELL": 446,
+        "true_EXIT": 0,
+        "pred_HOLD": 62,
+        "pred_BUY": 0,
+        "pred_SELL": 988,
+        "pred_EXIT": 0
+      },
+      "flat: unconfirmed up-break (evidence missing)": {
+        "n": 21270,
+        "accuracy": 0.920592383638928,
+        "macro_f1": 0.47932731144892415,
+        "true_HOLD": 21270,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 19581,
+        "pred_BUY": 1689,
+        "pred_SELL": 0,
+        "pred_EXIT": 0
+      },
+      "flat: unconfirmed down-break (evidence missing)": {
+        "n": 18037,
+        "accuracy": 0.9755502578034041,
+        "macro_f1": 0.4938119159206354,
+        "true_HOLD": 18037,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 17596,
+        "pred_BUY": 0,
+        "pred_SELL": 441,
+        "pred_EXIT": 0
+      },
+      "holding a position": {
+        "n": 801310,
+        "accuracy": 0.9899926370568195,
+        "macro_f1": 0.9851553008828196,
+        "true_HOLD": 171465,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 629845,
+        "pred_HOLD": 172422,
+        "pred_BUY": 0,
+        "pred_SELL": 0,
+        "pred_EXIT": 628888
+      }
+    },
+    "test": {
+      "flat: no breakout": {
+        "n": 2032558,
+        "accuracy": 0.9999896681915104,
+        "macro_f1": 0.3333316113563562,
+        "true_HOLD": 2032558,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 2032537,
+        "pred_BUY": 15,
+        "pred_SELL": 6,
+        "pred_EXIT": 0
+      },
+      "flat: up candidate (supported)": {
+        "n": 28157,
+        "accuracy": 0.29307099477927334,
+        "macro_f1": 0.23276659698945715,
+        "true_HOLD": 20029,
+        "true_BUY": 8128,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 234,
+        "pred_BUY": 27923,
+        "pred_SELL": 0,
+        "pred_EXIT": 0
+      },
+      "flat: down candidate (supported)": {
+        "n": 12304,
+        "accuracy": 0.26381664499349805,
+        "macro_f1": 0.23687148952878778,
+        "true_HOLD": 9389,
+        "true_BUY": 0,
+        "true_SELL": 2915,
+        "true_EXIT": 0,
+        "pred_HOLD": 603,
+        "pred_BUY": 0,
+        "pred_SELL": 11701,
+        "pred_EXIT": 0
+      },
+      "flat: unconfirmed up-break (evidence missing)": {
+        "n": 88939,
+        "accuracy": 0.8929940745904497,
+        "macro_f1": 0.31449088565641686,
+        "true_HOLD": 88939,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 79422,
+        "pred_BUY": 9514,
+        "pred_SELL": 3,
+        "pred_EXIT": 0
+      },
+      "flat: unconfirmed down-break (evidence missing)": {
+        "n": 109232,
+        "accuracy": 0.9650010985791709,
+        "macro_f1": 0.49109443209824777,
+        "true_HOLD": 109232,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 0,
+        "pred_HOLD": 105409,
+        "pred_BUY": 0,
+        "pred_SELL": 3823,
+        "pred_EXIT": 0
+      },
+      "holding a position": {
+        "n": 4542380,
+        "accuracy": 0.9901095901267617,
+        "macro_f1": 0.9853363527592046,
+        "true_HOLD": 974032,
+        "true_BUY": 0,
+        "true_SELL": 0,
+        "true_EXIT": 3568348,
+        "pred_HOLD": 976742,
+        "pred_BUY": 0,
+        "pred_SELL": 0,
+        "pred_EXIT": 3565638
+      }
+    }
+  },
+  "backtest_results": {
+    "val": {
+      "SP-04 model (balanced, long/short)": {
+        "n_days": 329.0,
+        "total_return": 0.2019302959114273,
+        "cagr": 0.15128840567130708,
+        "ann_vol": 0.18324780892733297,
+        "sharpe": 0.8579049744401223,
+        "sortino": 1.5350362633526144,
+        "max_drawdown": -0.09503382819807815,
+        "annualized_turnover": 23.86693388186523,
+        "avg_gross_exposure": 0.2845304665445299,
+        "trade_entries": 159.0,
+        "closed_trades": 153.0,
+        "win_rate": 0.45751633986928103,
+        "avg_trade_return": 0.014022398688937426
+      },
+      "SP-04 model (conservative, long/short)": {
+        "n_days": 329.0,
+        "total_return": 0.1982914944438503,
+        "cagr": 0.14861772552207442,
+        "ann_vol": 0.13432395148164966,
+        "sharpe": 1.0971624489795184,
+        "sortino": 2.119322922077986,
+        "max_drawdown": -0.04876990903031608,
+        "annualized_turnover": 19.73366005506586,
+        "avg_gross_exposure": 0.25788519775854374,
+        "trade_entries": 131.0,
+        "closed_trades": 127.0,
+        "win_rate": 0.5039370078740157,
+        "avg_trade_return": 0.0159429483702897
+      },
+      "SP-04 model (aggressive, long/short)": {
+        "n_days": 329.0,
+        "total_return": 0.22788096963451965,
+        "cagr": 0.17028033613953086,
+        "ann_vol": 0.1777031905908958,
+        "sharpe": 0.9720600500886626,
+        "sortino": 1.6396775555993883,
+        "max_drawdown": -0.09560382434020942,
+        "annualized_turnover": 26.217957217321644,
+        "avg_gross_exposure": 0.29336229019055926,
+        "trade_entries": 175.0,
+        "closed_trades": 169.0,
+        "win_rate": 0.46745562130177515,
+        "avg_trade_return": 0.012732313753762914
+      },
+      "SP-04 model (balanced, long-only)": {
+        "n_days": 329.0,
+        "total_return": 0.11281748941953018,
+        "cagr": 0.08532239498617922,
+        "ann_vol": 0.06153421852721085,
+        "sharpe": 1.3615093590701088,
+        "sortino": 1.9885361796724934,
+        "max_drawdown": -0.03673007723852684,
+        "annualized_turnover": 15.628226776551479,
+        "avg_gross_exposure": 0.20795002266520568,
+        "trade_entries": 105.0,
+        "closed_trades": 99.0,
+        "win_rate": 0.48484848484848486,
+        "avg_trade_return": 0.011865187383112544
+      },
+      "Breakout rule (balanced, long/short)": {
+        "n_days": 329.0,
+        "total_return": 0.17225791024819825,
+        "cagr": 0.1294546885483805,
+        "ann_vol": 0.15168260289659516,
+        "sharpe": 0.8766432183513453,
+        "sortino": 1.5670957952120568,
+        "max_drawdown": -0.062413416698700486,
+        "annualized_turnover": 19.396364438447506,
+        "avg_gross_exposure": 0.2233239512011154,
+        "trade_entries": 128.0,
+        "closed_trades": 125.0,
+        "win_rate": 0.456,
+        "avg_trade_return": 0.014077692547890085
+      },
+      "Plain breakout baseline (long-only)": {
+        "n_days": 329.0,
+        "total_return": 0.28535608597738826,
+        "cagr": 0.21201314404839922,
+        "ann_vol": 0.1325777470904131,
+        "sharpe": 1.517085205846753,
+        "sortino": 2.208377398683043,
+        "max_drawdown": -0.07820314394043648,
+        "annualized_turnover": 18.7003043431347,
+        "avg_gross_exposure": 0.6486835763973962,
+        "trade_entries": 132.0,
+        "closed_trades": 123.0,
+        "win_rate": 0.37398373983739835,
+        "avg_trade_return": 0.02159069011269687
+      },
+      "NIFTY 50 buy & hold": {
+        "n_days": 329.0,
+        "total_return": 0.30381876167250166,
+        "cagr": 0.2253255585533116,
+        "ann_vol": 0.28221788126159697,
+        "sharpe": 0.8636336646256073,
+        "sortino": 1.139933761314888,
+        "max_drawdown": -0.38439852452742085,
+        "annualized_turnover": 0.0,
+        "avg_gross_exposure": 1.0,
+        "trade_entries": null,
+        "closed_trades": null,
+        "win_rate": null,
+        "avg_trade_return": null
+      },
+      "Equal-weight universe buy & hold": {
+        "n_days": 329.0,
+        "total_return": 0.40619029875230117,
+        "cagr": 0.2983610512721402,
+        "ann_vol": 0.27871510128420535,
+        "sharpe": 1.0787005059744301,
+        "sortino": 1.4293227900562753,
+        "max_drawdown": -0.3595135117161836,
+        "annualized_turnover": 0.0,
+        "avg_gross_exposure": 1.0,
+        "trade_entries": null,
+        "closed_trades": null,
+        "win_rate": null,
+        "avg_trade_return": null
+      }
+    },
+    "test": {
+      "SP-04 model (balanced, long/short)": {
+        "n_days": 1412.0,
+        "total_return": -0.33129150771327265,
+        "cagr": -0.06929944257985665,
+        "ann_vol": 0.1234260317428579,
+        "sharpe": -0.5201570628228097,
+        "sortino": -0.7332516189814275,
+        "max_drawdown": -0.40821609380799573,
+        "annualized_turnover": 28.05845211612483,
+        "avg_gross_exposure": 0.3212145241367622,
+        "trade_entries": 785.0,
+        "closed_trades": 785.0,
+        "win_rate": 0.32611464968152865,
+        "avg_trade_return": -0.003973643394497128
+      },
+      "SP-04 model (conservative, long/short)": {
+        "n_days": 1412.0,
+        "total_return": -0.23968701881195253,
+        "cagr": -0.04772872476454604,
+        "ann_vol": 0.12083874120077527,
+        "sharpe": -0.3444218000401346,
+        "sortino": -0.4944281175308809,
+        "max_drawdown": -0.34642682199515684,
+        "annualized_turnover": 24.003608724619415,
+        "avg_gross_exposure": 0.30780881509841845,
+        "trade_entries": 672.0,
+        "closed_trades": 672.0,
+        "win_rate": 0.33482142857142855,
+        "avg_trade_return": -0.002930942001431006
+      },
+      "SP-04 model (aggressive, long/short)": {
+        "n_days": 1412.0,
+        "total_return": -0.3625750793032574,
+        "cagr": -0.0772237662760984,
+        "ann_vol": 0.12513343037425367,
+        "sharpe": -0.5797178188089314,
+        "sortino": -0.817916776102792,
+        "max_drawdown": -0.4338909656136556,
+        "annualized_turnover": 30.79535417849648,
+        "avg_gross_exposure": 0.3228608985322739,
+        "trade_entries": 863.0,
+        "closed_trades": 863.0,
+        "win_rate": 0.32329084588644263,
+        "avg_trade_return": -0.004115982206209872
+      },
+      "SP-04 model (balanced, long-only)": {
+        "n_days": 1412.0,
+        "total_return": -0.16884655351264855,
+        "cagr": -0.032467671686482014,
+        "ann_vol": 0.11975405765845948,
+        "sharpe": -0.21583366485500338,
+        "sortino": -0.30800277652460617,
+        "max_drawdown": -0.2933824119874201,
+        "annualized_turnover": 18.190782347042987,
+        "avg_gross_exposure": 0.21924303068470985,
+        "trade_entries": 510.0,
+        "closed_trades": 510.0,
+        "win_rate": 0.33725490196078434,
+        "avg_trade_return": -0.0025001097078903526
+      },
+      "Breakout rule (balanced, long/short)": {
+        "n_days": 1412.0,
+        "total_return": -0.2924524235768666,
+        "cagr": -0.059874457836976536,
+        "ann_vol": 0.1210178570981716,
+        "sharpe": -0.4497436210677937,
+        "sortino": -0.6402799102911254,
+        "max_drawdown": -0.3738485667687458,
+        "annualized_turnover": 23.670349779884518,
+        "avg_gross_exposure": 0.27246761078015386,
+        "trade_entries": 662.0,
+        "closed_trades": 662.0,
+        "win_rate": 0.3202416918429003,
+        "avg_trade_return": -0.0040764182769768885
+      },
+      "Plain breakout baseline (long-only)": {
+        "n_days": 1412.0,
+        "total_return": 0.03208278489263261,
+        "cagr": 0.005651802591146282,
+        "ann_vol": 0.1849986474722333,
+        "sharpe": 0.12292654249737982,
+        "sortino": 0.17515417227962096,
+        "max_drawdown": -0.3093067983985057,
+        "annualized_turnover": 18.07743181002275,
+        "avg_gross_exposure": 0.5984796525930361,
+        "trade_entries": 524.0,
+        "closed_trades": 518.0,
+        "win_rate": 0.3764478764478765,
+        "avg_trade_return": 0.0021335442365795114
+      },
+      "NIFTY 50 buy & hold": {
+        "n_days": 1412.0,
+        "total_return": 0.48945847580353763,
+        "cagr": 0.07369374409520546,
+        "ann_vol": 0.13898333666964244,
+        "sharpe": 0.5812833248987721,
+        "sortino": 0.8152629080999394,
+        "max_drawdown": -0.17229756084670078,
+        "annualized_turnover": 0.0,
+        "avg_gross_exposure": 1.0,
+        "trade_entries": null,
+        "closed_trades": null,
+        "win_rate": null,
+        "avg_trade_return": null
+      },
+      "Equal-weight universe buy & hold": {
+        "n_days": 1412.0,
+        "total_return": 1.028547775332953,
+        "cagr": 0.1345494462628638,
+        "ann_vol": 0.1352918957737024,
+        "sharpe": 1.0010196454155518,
+        "sortino": 1.4355550835434818,
+        "max_drawdown": -0.1430126554426323,
+        "annualized_turnover": 0.0,
+        "avg_gross_exposure": 1.0,
+        "trade_entries": null,
+        "closed_trades": null,
+        "win_rate": null,
+        "avg_trade_return": null
+      }
+    }
+  },
+  "regime_analysis_test": {
+    "Bullish (Return > +5%)": {
+      "Days": 487,
+      "Annualized Return": -0.05893734099254322,
+      "Annualized Vol": 0.12266402545864129,
+      "Sharpe": -0.43412790622115144,
+      "Max Drawdown": -0.21376208045374756
+    },
+    "Bearish (Return < -5%)": {
+      "Days": 180,
+      "Annualized Return": -0.0598811388370345,
+      "Annualized Vol": 0.07924217591950516,
+      "Sharpe": -0.739637050038157,
+      "Max Drawdown": -0.07978984612948159
+    },
+    "Sideways (|Return| <= 5%)": {
+      "Days": 686,
+      "Annualized Return": -0.08212961869810786,
+      "Annualized Vol": 0.13707044598429668,
+      "Sharpe": -0.5566606890823292,
+      "Max Drawdown": -0.2943971745080881
+    },
+    "High Volatility (Top 25% Vol)": {
+      "Days": 348,
+      "Annualized Return": -0.07212209614661114,
+      "Annualized Vol": 0.07986860815873614,
+      "Sharpe": -0.8968601306024936,
+      "Max Drawdown": -0.11213394719220782
+    },
+    "Low Volatility (Bottom 25% Vol)": {
+      "Days": 348,
+      "Annualized Return": 0.006407101002303017,
+      "Annualized Vol": 0.13207621612107343,
+      "Sharpe": 0.11398676283019563,
+      "Max Drawdown": -0.12827134615999458
+    }
+  },
+  "unseen_generalization_test": {
+    "HOLD": 128908,
+    "BUY": 2194,
+    "SELL": 899
+  },
+  "best_epoch": 17,
+  "class_weights": {
+    "HOLD": 0.8568974137306213,
+    "BUY": 32.645442962646484,
+    "SELL": 32.645442962646484,
+    "EXIT": 0.787544846534729
+  }
+}

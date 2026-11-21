@@ -1,0 +1,60 @@
+{
+  "model_name": "SP-04 Breakout Policy",
+  "policy_id": "SP-04",
+  "version": "1.0.0",
+  "artifact": "breakout_policy.pt",
+  "seq_len": 30,
+  "allow_short": true,
+  "temperature": 1.1917880773544312,
+  "model": {
+    "n_features": 53,
+    "n_static": 8,
+    "n_actions": 4,
+    "encoder": "gru",
+    "hidden_size": 64,
+    "num_layers": 2,
+    "dropout": 0.25,
+    "static_hidden": 16,
+    "head_hidden": 64
+  },
+  "action_space": {
+    "0": "HOLD",
+    "1": "BUY",
+    "2": "SELL",
+    "3": "EXIT"
+  },
+  "label_source": "strategy_derived_proxy (outcome_confirmed)",
+  "label_note": "Labels are strategy-derived PROXY labels from transparent breakout rules: NOT human demonstrations.",
+  "label_definition": {
+    "mode": "outcome_confirmed",
+    "horizon_bars": 10,
+    "min_edge": 0.01,
+    "fail_buffer": 0.005
+  },
+  "data": {
+    "benchmark": "NIFTY 50",
+    "train_end": "2019-10-16",
+    "val_end": "2021-02-10",
+    "source": "Indian Equity Market Historical OHLCV (NSE/BSE)"
+  },
+  "training": {
+    "epochs": 30,
+    "batch_size": 1024,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 7,
+    "grad_clip": 1.0,
+    "input_noise_std": 0.02,
+    "max_class_weight": 20.0,
+    "scaler_clip": 5.0,
+    "seed": 42,
+    "best_epoch": 17,
+    "class_weights": [
+      0.8568974137306213,
+      32.645442962646484,
+      32.645442962646484,
+      0.787544846534729
+    ]
+  },
+  "execution_convention": "decision at close of bar t, fill at open of bar t+1"
+}

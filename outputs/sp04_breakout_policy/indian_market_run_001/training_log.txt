@@ -1,0 +1,489 @@
+[2026-11-21 03:14:55] ================================================================================
+[2026-11-21 03:14:55] SP-04 BREAKOUT POLICY — INDIAN STOCK MARKET FULL TRAINING PIPELINE
+[2026-11-21 03:14:55] ================================================================================
+[2026-11-21 03:14:55] Device: cpu (threads=8)
+[2026-11-21 03:14:55] 
+================================================================================
+[2026-11-21 03:14:55] STEP 1: Loading & Cleaning Indian Market Historical Data
+[2026-11-21 03:14:55] ================================================================================
+[2026-11-21 03:15:04] Loaded raw CSV in 9.0s: 7,967,459 rows, 2704 symbols
+[2026-11-21 03:15:05] Asset types distribution: {'stocks': 7747755, 'indices': 71320, 'etfs': 52359, 'commodities': 49134, 'forex': 46891}
+[2026-11-21 03:15:05] Extracted NIFTY 50 benchmark: 4,684 clean daily bars from 2007-09-17 to 2026-10-23
+[2026-11-21 03:15:07] Total equity observations: 7,747,755 across 2654 symbols
+[2026-11-21 03:15:09] Dropping 39,152 corrupted price rows
+[2026-11-21 03:15:11] Eligible symbols with >= 800 clean rows: 1895
+[2026-11-21 03:15:11] 
+================================================================================
+[2026-11-21 03:15:11] STEP 2: Partitioning Training Universe (Deterministic Seed 42)
+[2026-11-21 03:15:11] ================================================================================
+[2026-11-21 03:15:11] Top-20 Liquid Indian Bluechip Cohort confirmed: ['RELIANCE', 'TCS', 'HDFCBANK', 'INFY', 'ICICIBANK', 'HINDUNILVR', 'ITC', 'SBIN', 'BHARTIARTL', 'KOTAKBANK', 'LT', 'AXISBANK', 'BAJFINANCE', 'MARUTI', 'HCLTECH', 'SUNPHARMA', 'TITAN', 'TATASTEEL', 'NTPC', 'POWERGRID']
+[2026-11-21 03:15:11] Unseen Holdout Cohort: 100 stocks (strictly excluded from training and scaler fitting)
+[2026-11-21 03:15:11] Main Universe: 1795 stocks (includes all 20 bluechips)
+[2026-11-21 03:15:12] 
+================================================================================
+[2026-11-21 03:15:12] STEP 3: Chronological 70:30 Split Definition
+[2026-11-21 03:15:12] ================================================================================
+[2026-11-21 03:15:12] Chronological Splitting Boundaries:
+[2026-11-21 03:15:12]   Training   (63.0%): 2007-09-17 -> 2019-10-16 (2951 trading days)
+[2026-11-21 03:15:12]   Validation ( 7.0%): 2019-10-17 -> 2021-02-10 (328 trading days)
+[2026-11-21 03:15:12]   Final Test (30.0%): 2021-02-11 -> 2026-10-23 (1405 trading days)
+[2026-11-21 03:15:12] 
+================================================================================
+[2026-11-21 03:15:12] STEP 4: Sequential & Breakout Feature Engineering (53 Features)
+[2026-11-21 03:15:12] ================================================================================
+[2026-11-21 03:15:12] Extracting features across all symbols...
+[2026-11-21 03:15:29]   Main Universe: 250/1795 stocks processed (17.0s)
+[2026-11-21 03:15:46]   Main Universe: 500/1795 stocks processed (34.0s)
+[2026-11-21 03:16:02]   Main Universe: 750/1795 stocks processed (49.6s)
+[2026-11-21 03:16:16]   Main Universe: 1000/1795 stocks processed (64.0s)
+[2026-11-21 03:16:31]   Main Universe: 1250/1795 stocks processed (78.4s)
+[2026-11-21 03:16:46]   Main Universe: 1500/1795 stocks processed (93.6s)
+[2026-11-21 03:17:02]   Main Universe: 1750/1795 stocks processed (110.0s)
+[2026-11-21 03:17:05]   Main Universe: 1795/1795 stocks processed (113.1s)
+[2026-11-21 03:17:25] Main Panel built: 5,821,707 rows x 64 columns across 1795 stocks
+[2026-11-21 03:17:25] Extracting features for Unseen Holdout cohort...
+[2026-11-21 03:17:34] Unseen Panel built: 339,840 rows x 64 columns across 100 stocks
+[2026-11-21 03:17:34] 
+================================================================================
+[2026-11-21 03:17:34] STEP 5: Strategy-Derived Breakout Proxy Labels & Purging
+[2026-11-21 03:17:34] ================================================================================
+C:\Users\Rehan\AppData\Roaming\Python\Python314\site-packages\pandas\core\internals\managers.py:1931: RuntimeWarning: overflow encountered in cast
+  result[rl.indexer] = arr
+[2026-11-21 03:17:38]   TRAIN eligible rows before position expansion: 2,966,992
+[2026-11-21 03:17:38]   TRAIN sampled rows (all breakouts + sampled non-events): 678,782
+[2026-11-21 03:17:41]   VAL eligible rows before position expansion: 400,655
+[2026-11-21 03:17:41]   TEST eligible rows before position expansion: 2,271,190
+[2026-11-21 03:17:49] 
+Sample Counts:
+        train     val     test
+HOLD   969740  570046  3234179
+BUY      7943    1628     8128
+SELL     3526     446     2915
+EXIT  1055137  629845  3568348
+[2026-11-21 03:17:49] 
+Label Distribution (%):
+      train    val   test
+HOLD  47.62  47.43  47.47
+BUY    0.39   0.14   0.12
+SELL   0.17   0.04   0.04
+EXIT  51.82  52.40  52.37
+[2026-11-21 03:17:49] 
+Computed Capped Class Weights: {'HOLD': 0.857, 'BUY': 32.645, 'SELL': 32.645, 'EXIT': 0.788}
+C:\Users\Rehan\AppData\Roaming\Python\Python314\site-packages\numpy\_core\_methods.py:190: RuntimeWarning: overflow encountered in square
+  x = um.square(x, out=x)
+[2026-11-21 03:18:00] Standardization Scaler fitted exclusively on 3,020,979 rows with date <= 2019-10-16
+[2026-11-21 03:18:00] 
+================================================================================
+[2026-11-21 03:18:00] STEP 6: Model Training from Scratch (PyTorch GRU)
+[2026-11-21 03:18:00] ================================================================================
+[2026-11-21 03:18:00] Initialized SP-04 BreakoutPolicyNet from scratch (seed 42): 53,396 parameters
+[2026-11-21 03:18:04] Starting training for up to 30 epochs (batch_size=1024, patience=7)...
+[2026-11-21 03:25:01] Epoch  1/30 | Train Loss: 0.2175 | Val Loss: 0.1050 | Val Macro-F1: 0.6162 | LR: 1.0e-03 | 416.5s *
+[2026-11-21 03:33:51] Epoch  2/30 | Train Loss: 0.1431 | Val Loss: 0.0823 | Val Macro-F1: 0.6328 | LR: 1.0e-03 | 530.4s *
+[2026-11-21 03:51:58] Epoch  3/30 | Train Loss: 0.1226 | Val Loss: 0.0657 | Val Macro-F1: 0.6332 | LR: 1.0e-03 | 1086.7s *
+[2026-11-21 04:18:17] Epoch  4/30 | Train Loss: 0.1093 | Val Loss: 0.0582 | Val Macro-F1: 0.6631 | LR: 1.0e-03 | 1578.5s *
+[2026-11-21 04:45:04] Epoch  5/30 | Train Loss: 0.1011 | Val Loss: 0.0505 | Val Macro-F1: 0.6581 | LR: 1.0e-03 | 1607.1s *
+[2026-11-21 05:10:15] Epoch  6/30 | Train Loss: 0.0964 | Val Loss: 0.0485 | Val Macro-F1: 0.6763 | LR: 1.0e-03 | 1511.6s *
+[2026-11-21 05:35:20] Epoch  7/30 | Train Loss: 0.0920 | Val Loss: 0.0461 | Val Macro-F1: 0.6693 | LR: 1.0e-03 | 1505.1s *
+[2026-11-21 05:58:59] Epoch  8/30 | Train Loss: 0.0885 | Val Loss: 0.0451 | Val Macro-F1: 0.6808 | LR: 1.0e-03 | 1418.9s *
+[2026-11-21 06:24:15] Epoch  9/30 | Train Loss: 0.0872 | Val Loss: 0.0437 | Val Macro-F1: 0.6756 | LR: 1.0e-03 | 1515.4s *
+[2026-11-21 06:54:33] Epoch 10/30 | Train Loss: 0.0854 | Val Loss: 0.0422 | Val Macro-F1: 0.6696 | LR: 1.0e-03 | 1817.9s *
+[2026-11-21 07:24:17] Epoch 11/30 | Train Loss: 0.0839 | Val Loss: 0.0407 | Val Macro-F1: 0.6983 | LR: 1.0e-03 | 1783.9s *
+[2026-11-21 07:53:42] Epoch 12/30 | Train Loss: 0.0832 | Val Loss: 0.0405 | Val Macro-F1: 0.6874 | LR: 1.0e-03 | 1765.0s *
+[2026-11-21 08:22:46] Epoch 13/30 | Train Loss: 0.0819 | Val Loss: 0.0391 | Val Macro-F1: 0.6844 | LR: 1.0e-03 | 1744.1s *
+[2026-11-21 08:51:25] Epoch 14/30 | Train Loss: 0.0814 | Val Loss: 0.0401 | Val Macro-F1: 0.7023 | LR: 1.0e-03 | 1719.5s
+[2026-11-21 09:19:35] Epoch 15/30 | Train Loss: 0.0804 | Val Loss: 0.0391 | Val Macro-F1: 0.6931 | LR: 1.0e-03 | 1689.7s
+[2026-11-21 09:47:32] Epoch 16/30 | Train Loss: 0.0794 | Val Loss: 0.0378 | Val Macro-F1: 0.6890 | LR: 1.0e-03 | 1677.2s *
+[2026-11-21 10:10:44] Epoch 17/30 | Train Loss: 0.0785 | Val Loss: 0.0374 | Val Macro-F1: 0.7030 | LR: 1.0e-03 | 1391.8s *
+[2026-11-21 10:32:38] Epoch 18/30 | Train Loss: 0.0775 | Val Loss: 0.0383 | Val Macro-F1: 0.6918 | LR: 1.0e-03 | 1314.1s
+[2026-11-21 10:54:35] Epoch 19/30 | Train Loss: 0.0765 | Val Loss: 0.0382 | Val Macro-F1: 0.7052 | LR: 1.0e-03 | 1316.7s
+[2026-11-21 11:16:36] Epoch 20/30 | Train Loss: 0.0772 | Val Loss: 0.0420 | Val Macro-F1: 0.7106 | LR: 5.0e-04 | 1320.8s
+[2026-11-21 11:38:31] Epoch 21/30 | Train Loss: 0.0717 | Val Loss: 0.0382 | Val Macro-F1: 0.7058 | LR: 5.0e-04 | 1315.1s
+[2026-11-21 11:59:45] Epoch 22/30 | Train Loss: 0.0701 | Val Loss: 0.0394 | Val Macro-F1: 0.7202 | LR: 5.0e-04 | 1274.3s
+[2026-11-21 12:20:31] Epoch 23/30 | Train Loss: 0.0692 | Val Loss: 0.0396 | Val Macro-F1: 0.7134 | LR: 2.5e-04 | 1245.9s
+[2026-11-21 13:27:13] ================================================================================
+[2026-11-21 13:27:13] SP-04 BREAKOUT POLICY — INDIAN STOCK MARKET FULL EVALUATION & ARTIFACT PIPELINE
+[2026-11-21 13:27:13] ================================================================================
+[2026-11-21 13:27:13] Device: cpu (threads=8)
+[2026-11-21 13:27:13] 
+================================================================================
+[2026-11-21 13:27:13] STEP 1: Loading & Cleaning Indian Market Historical Data
+[2026-11-21 13:27:13] ================================================================================
+[2026-11-21 13:27:21] Loaded raw CSV in 8.7s: 7,967,459 rows, 2704 symbols
+[2026-11-21 13:27:22] Asset types distribution: {'stocks': 7747755, 'indices': 71320, 'etfs': 52359, 'commodities': 49134, 'forex': 46891}
+[2026-11-21 13:27:23] Extracted NIFTY 50 benchmark: 4,684 clean daily bars from 2007-09-17 to 2026-10-23
+[2026-11-21 13:27:24] Total equity observations: 7,747,755 across 2654 symbols
+[2026-11-21 13:27:26] Dropping 39,152 corrupted price rows
+[2026-11-21 13:27:28] Eligible symbols with >= 800 clean rows: 1895
+[2026-11-21 13:27:28] 
+================================================================================
+[2026-11-21 13:27:28] STEP 2: Partitioning Training Universe (Deterministic Seed 42)
+[2026-11-21 13:27:28] ================================================================================
+[2026-11-21 13:27:28] Top-20 Liquid Indian Bluechip Cohort confirmed: ['RELIANCE', 'TCS', 'HDFCBANK', 'INFY', 'ICICIBANK', 'HINDUNILVR', 'ITC', 'SBIN', 'BHARTIARTL', 'KOTAKBANK', 'LT', 'AXISBANK', 'BAJFINANCE', 'MARUTI', 'HCLTECH', 'SUNPHARMA', 'TITAN', 'TATASTEEL', 'NTPC', 'POWERGRID']
+[2026-11-21 13:27:28] Unseen Holdout Cohort: 100 stocks (strictly excluded from training and scaler fitting)
+[2026-11-21 13:27:28] Main Universe: 1795 stocks (includes all 20 bluechips)
+[2026-11-21 13:27:28] 
+================================================================================
+[2026-11-21 13:27:28] STEP 3: Chronological 70:30 Split Definition
+[2026-11-21 13:27:28] ================================================================================
+[2026-11-21 13:27:28] Chronological Splitting Boundaries:
+[2026-11-21 13:27:28]   Training   (63.0%): 2007-09-17 -> 2019-10-16 (2951 trading days)
+[2026-11-21 13:27:28]   Validation ( 7.0%): 2019-10-17 -> 2021-02-10 (328 trading days)
+[2026-11-21 13:27:28]   Final Test (30.0%): 2021-02-11 -> 2026-10-23 (1405 trading days)
+[2026-11-21 13:27:28] 
+================================================================================
+[2026-11-21 13:27:28] STEP 4: Sequential & Breakout Feature Engineering (53 Features)
+[2026-11-21 13:27:28] ================================================================================
+[2026-11-21 13:27:28] Extracting features across all symbols...
+[2026-11-21 13:27:42]   Main Universe: 250/1795 stocks processed (14.0s)
+[2026-11-21 13:27:56]   Main Universe: 500/1795 stocks processed (27.5s)
+[2026-11-21 13:28:09]   Main Universe: 750/1795 stocks processed (40.9s)
+[2026-11-21 13:28:23]   Main Universe: 1000/1795 stocks processed (54.2s)
+[2026-11-21 13:28:36]   Main Universe: 1250/1795 stocks processed (67.4s)
+[2026-11-21 13:28:49]   Main Universe: 1500/1795 stocks processed (80.7s)
+[2026-11-21 13:29:02]   Main Universe: 1750/1795 stocks processed (94.1s)
+[2026-11-21 13:29:05]   Main Universe: 1795/1795 stocks processed (96.6s)
+[2026-11-21 13:29:15] Main Panel built: 5,821,707 rows x 64 columns across 1795 stocks
+[2026-11-21 13:29:15] Extracting features for Unseen Holdout cohort...
+[2026-11-21 13:29:23] Unseen Panel built: 339,840 rows x 64 columns across 100 stocks
+[2026-11-21 13:29:23] 
+================================================================================
+[2026-11-21 13:29:23] STEP 5: Strategy-Derived Breakout Proxy Labels & Purging
+[2026-11-21 13:29:23] ================================================================================
+[2026-11-21 13:29:28]   TRAIN eligible rows before position expansion: 2,966,992
+[2026-11-21 13:29:28]   TRAIN sampled rows (all breakouts + sampled non-events): 678,782
+[2026-11-21 13:29:31]   VAL eligible rows before position expansion: 400,655
+[2026-11-21 13:29:31]   TEST eligible rows before position expansion: 2,271,190
+[2026-11-21 13:29:40] 
+Sample Counts:
+        train     val     test
+HOLD   969740  570046  3234179
+BUY      7943    1628     8128
+SELL     3526     446     2915
+EXIT  1055137  629845  3568348
+[2026-11-21 13:29:40] 
+Label Distribution (%):
+      train    val   test
+HOLD  47.62  47.43  47.47
+BUY    0.39   0.14   0.12
+SELL   0.17   0.04   0.04
+EXIT  51.82  52.40  52.37
+[2026-11-21 13:29:40] 
+Computed Capped Class Weights: {'HOLD': 0.857, 'BUY': 32.645, 'SELL': 32.645, 'EXIT': 0.788}
+[2026-11-21 13:29:50] Standardization Scaler fitted exclusively on 3,020,979 rows with date <= 2019-10-16
+[2026-11-21 13:29:50] 
+================================================================================
+[2026-11-21 13:29:50] Restoring Trained SP-04 BreakoutPolicyNet Checkpoint
+[2026-11-21 13:29:50] ================================================================================
+[2026-11-21 13:29:50] Restored Best Checkpoint from Epoch 17 (Val Loss: 0.0374)
+[2026-11-21 13:29:50] Training history parsed: 23 epochs. Final checkpoint saved.
+[2026-11-21 13:29:50] 
+================================================================================
+[2026-11-21 13:29:50] STEP 7: Temperature Calibration & Classification Metrics
+[2026-11-21 13:29:50] ================================================================================
+[2026-11-21 13:38:26] Fitted Calibration Temperature (Validation Set): 1.192
+[2026-11-21 13:38:35] 
+--- [VAL] Classification Performance ---
+[2026-11-21 13:38:35]   Accuracy: 0.9882 | Balanced Acc: 0.9733 | Macro-F1: 0.7030 | Weighted-F1: 0.9897
+[2026-11-21 13:38:35]   NLL: 0.0287 | ECE: 0.0025 (Majority Class Baseline: 0.5240)
+[2026-11-21 13:38:35] 
+Per-Action Performance:
+      precision  recall      f1   support
+HOLD     0.9920  0.9832  0.9875  570046.0
+BUY      0.2405  0.9822  0.3863    1628.0
+SELL     0.2916  0.9350  0.4446     446.0
+EXIT     0.9944  0.9929  0.9936  629845.0
+[2026-11-21 13:38:35] 
+Confusion Matrix:
+        HOLD   BUY  SELL    EXIT
+HOLD  560451  5051  1013    3531
+BUY       29  1599     0       0
+SELL      29     0   417       0
+EXIT    4488     0     0  625357
+[2026-11-21 13:38:35] 
+--- [TEST] Classification Performance ---
+[2026-11-21 13:38:35]   Accuracy: 0.9872 | Balanced Acc: 0.9801 | Macro-F1: 0.6589 | Weighted-F1: 0.9892
+[2026-11-21 13:38:35]   NLL: 0.0307 | ECE: 0.0029 (Majority Class Baseline: 0.5237)
+[2026-11-21 13:38:35] 
+Per-Action Performance:
+      precision  recall      f1    support
+HOLD     0.9925  0.9804  0.9864  3234179.0
+BUY      0.2156  0.9932  0.3542     8128.0
+SELL     0.1789  0.9533  0.3013     2915.0
+EXIT     0.9941  0.9933  0.9937  3568348.0
+[2026-11-21 13:38:35] 
+Confusion Matrix:
+         HOLD    BUY   SELL     EXIT
+HOLD  3170938  29379  12754    21108
+BUY        55   8073      0        0
+SELL      136      0   2779        0
+EXIT    23818      0      0  3544530
+[2026-11-21 13:38:41] 
+[VAL] Performance by Breakout Condition:
+                                                      n  accuracy  macro_f1  true_HOLD  true_BUY  true_SELL  true_EXIT  pred_HOLD  pred_BUY  pred_SELL  pred_EXIT
+condition                                                                                                                                                        
+flat: no breakout                                355244     1.000     0.333     355244         0          0          0     355242         1          1          0
+flat: up candidate (supported)                     5054     0.329     0.261       3426      1628          0          0         94      4960          0          0
+flat: down candidate (supported)                   1050     0.429     0.340        604         0        446          0         62         0        988          0
+flat: unconfirmed up-break (evidence missing)     21270     0.921     0.479      21270         0          0          0      19581      1689          0          0
+flat: unconfirmed down-break (evidence missing)   18037     0.976     0.494      18037         0          0          0      17596         0        441          0
+holding a position                               801310     0.990     0.985     171465         0          0     629845     172422         0          0     628888
+[2026-11-21 13:38:53] 
+[TEST] Performance by Breakout Condition:
+                                                       n  accuracy  macro_f1  true_HOLD  true_BUY  true_SELL  true_EXIT  pred_HOLD  pred_BUY  pred_SELL  pred_EXIT
+condition                                                                                                                                                         
+flat: no breakout                                2032558     1.000     0.333    2032558         0          0          0    2032537        15          6          0
+flat: up candidate (supported)                     28157     0.293     0.233      20029      8128          0          0        234     27923          0          0
+flat: down candidate (supported)                   12304     0.264     0.237       9389         0       2915          0        603         0      11701          0
+flat: unconfirmed up-break (evidence missing)      88939     0.893     0.314      88939         0          0          0      79422      9514          3          0
+flat: unconfirmed down-break (evidence missing)   109232     0.965     0.491     109232         0          0          0     105409         0       3823          0
+holding a position                               4542380     0.990     0.985     974032         0          0    3568348     976742         0          0    3565638
+[2026-11-21 13:38:53] 
+================================================================================
+[2026-11-21 13:38:53] STEP 8: Realistic Portfolio Backtesting
+[2026-11-21 13:38:53] ================================================================================
+[2026-11-21 13:38:53] Running backtesting on Top-20 Bluechip cohort across Validation and Test splits...
+[2026-11-21 13:39:07] 
+===== [VAL] BACKTEST RESULTS (330 days) =====
+[2026-11-21 13:39:07] 
+                                        total_return   cagr  sharpe  sortino  max_drawdown  annualized_turnover  trade_entries  win_rate
+SP-04 model (balanced, long/short)             0.202  0.151   0.858    1.535        -0.095               23.867          159.0     0.458
+SP-04 model (conservative, long/short)         0.198  0.149   1.097    2.119        -0.049               19.734          131.0     0.504
+SP-04 model (aggressive, long/short)           0.228  0.170   0.972    1.640        -0.096               26.218          175.0     0.467
+SP-04 model (balanced, long-only)              0.113  0.085   1.362    1.989        -0.037               15.628          105.0     0.485
+Breakout rule (balanced, long/short)           0.172  0.129   0.877    1.567        -0.062               19.396          128.0     0.456
+Plain breakout baseline (long-only)            0.285  0.212   1.517    2.208        -0.078               18.700          132.0     0.374
+NIFTY 50 buy & hold                            0.304  0.225   0.864    1.140        -0.384                0.000            NaN       NaN
+Equal-weight universe buy & hold               0.406  0.298   1.079    1.429        -0.360                0.000            NaN       NaN
+[2026-11-21 13:39:47] 
+===== [TEST] BACKTEST RESULTS (1413 days) =====
+[2026-11-21 13:39:47] 
+                                        total_return   cagr  sharpe  sortino  max_drawdown  annualized_turnover  trade_entries  win_rate
+SP-04 model (balanced, long/short)            -0.331 -0.069  -0.520   -0.733        -0.408               28.058          785.0     0.326
+SP-04 model (conservative, long/short)        -0.240 -0.048  -0.344   -0.494        -0.346               24.004          672.0     0.335
+SP-04 model (aggressive, long/short)          -0.363 -0.077  -0.580   -0.818        -0.434               30.795          863.0     0.323
+SP-04 model (balanced, long-only)             -0.169 -0.032  -0.216   -0.308        -0.293               18.191          510.0     0.337
+Breakout rule (balanced, long/short)          -0.292 -0.060  -0.450   -0.640        -0.374               23.670          662.0     0.320
+Plain breakout baseline (long-only)            0.032  0.006   0.123    0.175        -0.309               18.077          524.0     0.376
+NIFTY 50 buy & hold                            0.489  0.074   0.581    0.815        -0.172                0.000            NaN       NaN
+Equal-weight universe buy & hold                 inf    inf     NaN      inf           NaN                0.000            NaN       NaN
+[2026-11-21 13:39:47] 
+================================================================================
+[2026-11-21 13:39:47] STEP 9: Generalization & Regime Experiments
+[2026-11-21 13:39:47] ================================================================================
+[2026-11-21 13:39:47] 
+--- Experiment B: Unseen-Stock Generalization (100 Holdout Stocks) ---
+[2026-11-21 13:39:48] Unseen stock test period evaluation rows: 132,001
+[2026-11-21 13:40:43] ================================================================================
+[2026-11-21 13:40:43] SP-04 BREAKOUT POLICY — INDIAN STOCK MARKET FULL EVALUATION & ARTIFACT PIPELINE
+[2026-11-21 13:40:43] ================================================================================
+[2026-11-21 13:40:43] Device: cpu (threads=8)
+[2026-11-21 13:40:43] 
+================================================================================
+[2026-11-21 13:40:43] STEP 1: Loading & Cleaning Indian Market Historical Data
+[2026-11-21 13:40:43] ================================================================================
+[2026-11-21 13:40:52] Loaded raw CSV in 8.4s: 7,967,459 rows, 2704 symbols
+[2026-11-21 13:40:52] Asset types distribution: {'stocks': 7747755, 'indices': 71320, 'etfs': 52359, 'commodities': 49134, 'forex': 46891}
+[2026-11-21 13:40:53] Extracted NIFTY 50 benchmark: 4,684 clean daily bars from 2007-09-17 to 2026-10-23
+[2026-11-21 13:40:55] Total equity observations: 7,747,755 across 2654 symbols
+[2026-11-21 13:40:56] Dropping 39,152 corrupted price rows
+[2026-11-21 13:40:58] Eligible symbols with >= 800 clean rows: 1895
+[2026-11-21 13:40:58] 
+================================================================================
+[2026-11-21 13:40:58] STEP 2: Partitioning Training Universe (Deterministic Seed 42)
+[2026-11-21 13:40:58] ================================================================================
+[2026-11-21 13:40:58] Top-20 Liquid Indian Bluechip Cohort confirmed: ['RELIANCE', 'TCS', 'HDFCBANK', 'INFY', 'ICICIBANK', 'HINDUNILVR', 'ITC', 'SBIN', 'BHARTIARTL', 'KOTAKBANK', 'LT', 'AXISBANK', 'BAJFINANCE', 'MARUTI', 'HCLTECH', 'SUNPHARMA', 'TITAN', 'TATASTEEL', 'NTPC', 'POWERGRID']
+[2026-11-21 13:40:58] Unseen Holdout Cohort: 100 stocks (strictly excluded from training and scaler fitting)
+[2026-11-21 13:40:58] Main Universe: 1795 stocks (includes all 20 bluechips)
+[2026-11-21 13:40:59] 
+================================================================================
+[2026-11-21 13:40:59] STEP 3: Chronological 70:30 Split Definition
+[2026-11-21 13:40:59] ================================================================================
+[2026-11-21 13:40:59] Chronological Splitting Boundaries:
+[2026-11-21 13:40:59]   Training   (63.0%): 2007-09-17 -> 2019-10-16 (2951 trading days)
+[2026-11-21 13:40:59]   Validation ( 7.0%): 2019-10-17 -> 2021-02-10 (328 trading days)
+[2026-11-21 13:40:59]   Final Test (30.0%): 2021-02-11 -> 2026-10-23 (1405 trading days)
+[2026-11-21 13:40:59] 
+================================================================================
+[2026-11-21 13:40:59] STEP 4: Sequential & Breakout Feature Engineering (53 Features)
+[2026-11-21 13:40:59] ================================================================================
+[2026-11-21 13:40:59] Extracting features across all symbols...
+[2026-11-21 13:41:13]   Main Universe: 250/1795 stocks processed (14.2s)
+[2026-11-21 13:41:27]   Main Universe: 500/1795 stocks processed (28.4s)
+[2026-11-21 13:41:42]   Main Universe: 750/1795 stocks processed (43.1s)
+[2026-11-21 13:41:56]   Main Universe: 1000/1795 stocks processed (57.1s)
+[2026-11-21 13:42:10]   Main Universe: 1250/1795 stocks processed (71.3s)
+[2026-11-21 13:42:24]   Main Universe: 1500/1795 stocks processed (85.0s)
+[2026-11-21 13:42:38]   Main Universe: 1750/1795 stocks processed (99.3s)
+[2026-11-21 13:42:41]   Main Universe: 1795/1795 stocks processed (101.9s)
+[2026-11-21 13:42:48] Main Panel built: 5,821,707 rows x 64 columns across 1795 stocks
+[2026-11-21 13:42:48] Extracting features for Unseen Holdout cohort...
+[2026-11-21 13:42:56] Unseen Panel built: 339,840 rows x 64 columns across 100 stocks
+[2026-11-21 13:42:56] 
+================================================================================
+[2026-11-21 13:42:56] STEP 5: Strategy-Derived Breakout Proxy Labels & Purging
+[2026-11-21 13:42:56] ================================================================================
+[2026-11-21 13:43:01]   TRAIN eligible rows before position expansion: 2,966,992
+[2026-11-21 13:43:01]   TRAIN sampled rows (all breakouts + sampled non-events): 678,782
+[2026-11-21 13:43:04]   VAL eligible rows before position expansion: 400,655
+[2026-11-21 13:43:05]   TEST eligible rows before position expansion: 2,271,190
+[2026-11-21 13:43:13] 
+Sample Counts:
+        train     val     test
+HOLD   969740  570046  3234179
+BUY      7943    1628     8128
+SELL     3526     446     2915
+EXIT  1055137  629845  3568348
+[2026-11-21 13:43:13] 
+Label Distribution (%):
+      train    val   test
+HOLD  47.62  47.43  47.47
+BUY    0.39   0.14   0.12
+SELL   0.17   0.04   0.04
+EXIT  51.82  52.40  52.37
+[2026-11-21 13:43:13] 
+Computed Capped Class Weights: {'HOLD': 0.857, 'BUY': 32.645, 'SELL': 32.645, 'EXIT': 0.788}
+[2026-11-21 13:43:23] Standardization Scaler fitted exclusively on 3,020,979 rows with date <= 2019-10-16
+[2026-11-21 13:43:23] 
+================================================================================
+[2026-11-21 13:43:23] Restoring Trained SP-04 BreakoutPolicyNet Checkpoint
+[2026-11-21 13:43:23] ================================================================================
+[2026-11-21 13:43:23] Restored Best Checkpoint from Epoch 17 (Val Loss: 0.0374)
+[2026-11-21 13:43:23] Training history parsed: 23 epochs. Final checkpoint saved.
+[2026-11-21 13:43:23] 
+================================================================================
+[2026-11-21 13:43:23] STEP 7: Temperature Calibration & Classification Metrics
+[2026-11-21 13:43:23] ================================================================================
+[2026-11-21 13:52:28] Fitted Calibration Temperature (Validation Set): 1.192
+[2026-11-21 13:52:37] 
+--- [VAL] Classification Performance ---
+[2026-11-21 13:52:37]   Accuracy: 0.9882 | Balanced Acc: 0.9733 | Macro-F1: 0.7030 | Weighted-F1: 0.9897
+[2026-11-21 13:52:37]   NLL: 0.0287 | ECE: 0.0025 (Majority Class Baseline: 0.5240)
+[2026-11-21 13:52:37] 
+Per-Action Performance:
+      precision  recall      f1   support
+HOLD     0.9920  0.9832  0.9875  570046.0
+BUY      0.2405  0.9822  0.3863    1628.0
+SELL     0.2916  0.9350  0.4446     446.0
+EXIT     0.9944  0.9929  0.9936  629845.0
+[2026-11-21 13:52:37] 
+Confusion Matrix:
+        HOLD   BUY  SELL    EXIT
+HOLD  560451  5051  1013    3531
+BUY       29  1599     0       0
+SELL      29     0   417       0
+EXIT    4488     0     0  625357
+[2026-11-21 13:52:37] 
+--- [TEST] Classification Performance ---
+[2026-11-21 13:52:37]   Accuracy: 0.9872 | Balanced Acc: 0.9801 | Macro-F1: 0.6589 | Weighted-F1: 0.9892
+[2026-11-21 13:52:37]   NLL: 0.0307 | ECE: 0.0029 (Majority Class Baseline: 0.5237)
+[2026-11-21 13:52:37] 
+Per-Action Performance:
+      precision  recall      f1    support
+HOLD     0.9925  0.9804  0.9864  3234179.0
+BUY      0.2156  0.9932  0.3542     8128.0
+SELL     0.1789  0.9533  0.3013     2915.0
+EXIT     0.9941  0.9933  0.9937  3568348.0
+[2026-11-21 13:52:37] 
+Confusion Matrix:
+         HOLD    BUY   SELL     EXIT
+HOLD  3170938  29379  12754    21108
+BUY        55   8073      0        0
+SELL      136      0   2779        0
+EXIT    23818      0      0  3544530
+[2026-11-21 13:52:45] 
+[VAL] Performance by Breakout Condition:
+                                                      n  accuracy  macro_f1  true_HOLD  true_BUY  true_SELL  true_EXIT  pred_HOLD  pred_BUY  pred_SELL  pred_EXIT
+condition                                                                                                                                                        
+flat: no breakout                                355244     1.000     0.333     355244         0          0          0     355242         1          1          0
+flat: up candidate (supported)                     5054     0.329     0.261       3426      1628          0          0         94      4960          0          0
+flat: down candidate (supported)                   1050     0.429     0.340        604         0        446          0         62         0        988          0
+flat: unconfirmed up-break (evidence missing)     21270     0.921     0.479      21270         0          0          0      19581      1689          0          0
+flat: unconfirmed down-break (evidence missing)   18037     0.976     0.494      18037         0          0          0      17596         0        441          0
+holding a position                               801310     0.990     0.985     171465         0          0     629845     172422         0          0     628888
+[2026-11-21 13:52:59] 
+[TEST] Performance by Breakout Condition:
+                                                       n  accuracy  macro_f1  true_HOLD  true_BUY  true_SELL  true_EXIT  pred_HOLD  pred_BUY  pred_SELL  pred_EXIT
+condition                                                                                                                                                         
+flat: no breakout                                2032558     1.000     0.333    2032558         0          0          0    2032537        15          6          0
+flat: up candidate (supported)                     28157     0.293     0.233      20029      8128          0          0        234     27923          0          0
+flat: down candidate (supported)                   12304     0.264     0.237       9389         0       2915          0        603         0      11701          0
+flat: unconfirmed up-break (evidence missing)      88939     0.893     0.314      88939         0          0          0      79422      9514          3          0
+flat: unconfirmed down-break (evidence missing)   109232     0.965     0.491     109232         0          0          0     105409         0       3823          0
+holding a position                               4542380     0.990     0.985     974032         0          0    3568348     976742         0          0    3565638
+[2026-11-21 13:52:59] 
+================================================================================
+[2026-11-21 13:52:59] STEP 8: Realistic Portfolio Backtesting
+[2026-11-21 13:52:59] ================================================================================
+[2026-11-21 13:52:59] Running backtesting on Top-20 Bluechip cohort across Validation and Test splits...
+[2026-11-21 13:53:12] 
+===== [VAL] BACKTEST RESULTS (330 days) =====
+[2026-11-21 13:53:12] 
+                                        total_return   cagr  sharpe  sortino  max_drawdown  annualized_turnover  trade_entries  win_rate
+SP-04 model (balanced, long/short)             0.202  0.151   0.858    1.535        -0.095               23.867          159.0     0.458
+SP-04 model (conservative, long/short)         0.198  0.149   1.097    2.119        -0.049               19.734          131.0     0.504
+SP-04 model (aggressive, long/short)           0.228  0.170   0.972    1.640        -0.096               26.218          175.0     0.467
+SP-04 model (balanced, long-only)              0.113  0.085   1.362    1.989        -0.037               15.628          105.0     0.485
+Breakout rule (balanced, long/short)           0.172  0.129   0.877    1.567        -0.062               19.396          128.0     0.456
+Plain breakout baseline (long-only)            0.285  0.212   1.517    2.208        -0.078               18.700          132.0     0.374
+NIFTY 50 buy & hold                            0.304  0.225   0.864    1.140        -0.384                0.000            NaN       NaN
+Equal-weight universe buy & hold               0.406  0.298   1.079    1.429        -0.360                0.000            NaN       NaN
+[2026-11-21 13:53:48] 
+===== [TEST] BACKTEST RESULTS (1413 days) =====
+[2026-11-21 13:53:48] 
+                                        total_return   cagr  sharpe  sortino  max_drawdown  annualized_turnover  trade_entries  win_rate
+SP-04 model (balanced, long/short)            -0.331 -0.069  -0.520   -0.733        -0.408               28.058          785.0     0.326
+SP-04 model (conservative, long/short)        -0.240 -0.048  -0.344   -0.494        -0.346               24.004          672.0     0.335
+SP-04 model (aggressive, long/short)          -0.363 -0.077  -0.580   -0.818        -0.434               30.795          863.0     0.323
+SP-04 model (balanced, long-only)             -0.169 -0.032  -0.216   -0.308        -0.293               18.191          510.0     0.337
+Breakout rule (balanced, long/short)          -0.292 -0.060  -0.450   -0.640        -0.374               23.670          662.0     0.320
+Plain breakout baseline (long-only)            0.032  0.006   0.123    0.175        -0.309               18.077          524.0     0.376
+NIFTY 50 buy & hold                            0.489  0.074   0.581    0.815        -0.172                0.000            NaN       NaN
+Equal-weight universe buy & hold               1.029  0.135   1.001    1.436        -0.143                0.000            NaN       NaN
+[2026-11-21 13:53:48] 
+================================================================================
+[2026-11-21 13:53:48] STEP 9: Generalization & Regime Experiments
+[2026-11-21 13:53:48] ================================================================================
+[2026-11-21 13:53:48] 
+--- Experiment B: Unseen-Stock Generalization (100 Holdout Stocks) ---
+[2026-11-21 13:53:49] Unseen stock test period evaluation rows: 132,001
+[2026-11-21 13:54:05] Unseen-stock predicted action distribution (Test period, flat state):
+HOLD    128908
+BUY       2194
+SELL       899
+[2026-11-21 13:54:05] 
+--- Experiment C: Top-20 Bluechip Cohort In-Depth Metrics ---
+[2026-11-21 13:54:05] 
+                                      total_return   cagr  sharpe  max_drawdown  win_rate
+SP-04 model (balanced, long/short)          -0.331 -0.069  -0.520        -0.408     0.326
+Breakout rule (balanced, long/short)        -0.292 -0.060  -0.450        -0.374     0.320
+Plain breakout baseline (long-only)          0.032  0.006   0.123        -0.309     0.376
+NIFTY 50 buy & hold                          0.489  0.074   0.581        -0.172       NaN
+[2026-11-21 13:54:05] 
+--- Experiment D: Market Regime Breakdown (Test Period) ---
+[2026-11-21 13:54:05] 
+                                 Days  Annualized Return  Annualized Vol  Sharpe  Max Drawdown
+Regime                                                                                        
+Bullish (Return > +5%)            487             -0.059           0.123  -0.434        -0.214
+Bearish (Return < -5%)            180             -0.060           0.079  -0.740        -0.080
+Sideways (|Return| <= 5%)         686             -0.082           0.137  -0.557        -0.294
+High Volatility (Top 25% Vol)     348             -0.072           0.080  -0.897        -0.112
+Low Volatility (Bottom 25% Vol)   348              0.006           0.132   0.114        -0.128
+[2026-11-21 13:54:05] 
+================================================================================
+[2026-11-21 13:54:05] STEP 10: Generating Visualizations & Saving All Final Artifacts
+[2026-11-21 13:54:05] ================================================================================
+[2026-11-21 13:54:07] 
+================================================================================
+[2026-11-21 13:54:07] STEP 11: Round-Trip Check & Meta-RL Interface Verification
+[2026-11-21 13:54:07] ================================================================================
+[2026-11-21 13:54:08] Verification Check Passed:
+[2026-11-21 13:54:08]   [x] Disk load reproduces in-memory predictions with float32 bitwise equality
+[2026-11-21 13:54:08]   [x] Adapter format identical to extended 53-feature sequence
+[2026-11-21 13:54:08]   [x] Valid action masking strictly enforces position transitions (flat -> BUY/SELL/HOLD; long/short -> EXIT/HOLD)
+[2026-11-21 13:54:08]   [x] Meta-RL integration contract fully preserved
+[2026-11-21 13:54:08] 
+================================================================================
+[2026-11-21 13:54:08] SP-04 BREAKOUT POLICY TRAINING COMPLETED SUCCESSFULLY IN 13.4 MINUTES!
+[2026-11-21 13:54:08] All artifacts saved in: D:\04_breakout_policy - Attempt 2\outputs\sp04_breakout_policy\indian_market_run_001
+[2026-11-21 13:54:08] ================================================================================
